@@ -1,3 +1,4 @@
+import base64
 import os
 
 from django.shortcuts import render
@@ -84,14 +85,13 @@ def create(request, notes):
                 ignore[note] -= 1
     name = notes + '--' + str(randrange(0, 50000))
 
-    # in production, you should change this
 
-    output_dir = os.path.join(settings.MEDIA_ROOT, 'generated')
-    os.makedirs(output_dir, exist_ok=True)
 
-    saveloc = os.path.join(output_dir, name + '.png')
-    url = settings.MEDIA_URL + "/generated/" + name + ".png"
-    img.save(saveloc)
+    buffer = io.BytesIO()
+    img.save(buffer, format='PNG')
+    buffer.seek(0)
+    image_base64 = base64.b64encode(buffer.read()).decode('utf-8')
+    image_data_url = f"data:image/png;base64,{image_base64}"
 
     # Google Cloud code
     # storage_client = storage.Client()
@@ -103,7 +103,7 @@ def create(request, notes):
     #
     # url = 'https://storage.googleapis.com/waveo/' + name
 
-    return TemplateResponse(request, "waveo/create.html", {'url': url, 'name': name})
+    return TemplateResponse(request, "waveo/create.html", {'url': image_data_url, 'name': name})
 
 
 def recall(request, name):
