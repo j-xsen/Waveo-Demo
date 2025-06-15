@@ -7,7 +7,7 @@ from random import randrange
 # from google.cloud import storage
 import io
 
-from WebProject import settings
+from api import settings
 
 max_length = 12
 
