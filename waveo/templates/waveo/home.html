@@ -1,0 +1,46 @@
+{% extends 'waveo/base.html' %}
+{% load static %}
+
+{% block content %}
+<script>
+function create(){
+    let sendstring = ""
+
+    for(let index in notes){
+        sendstring+=notes[index] + "-";
+    }
+    sendstring = sendstring.substring(0, sendstring.length - 1);
+    window.open('/create/' + sendstring,'_self');
+}
+</script>
+
+<div class="jumbotron">
+    <h1>Create artwork with your music</h1>
+</div>
+
+<table>
+    {% for note in notes %}
+    <tr>
+        <td>{{ note|upper }}</td>
+        {% for time in length %}
+        <td class="note time-{{ time }}" time="{{ time }}" play="0" note="{{ note }}">
+            <audio id="{{ note }}-{{ time }}" preload="auto">
+                <source src="static/waveo/mp3/{{ note }}.mp3">
+            </audio>
+            <i class="fa-regular fa-circle"></i>
+        </td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+
+<div class="jumbotron">
+    <button class="play-button" play=0><i class="fas fa-play"></i></button>
+    <button onclick="create()">CREATE</button>
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+<script src="{% static "waveo/js/js.js" %}"></script>
+{% endblock %}

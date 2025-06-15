@@ -1,0 +1,23 @@
+{% extends 'waveo/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="jumbotron">
+    <h1>Create artwork with your music</h1>
+</div>
+
+<div class="jumbotron">
+    <img class="created" src="{{ url }}"/>
+</div>
+
+<div class="jumbotron">
+    <button class="copy" data-clipboard-text="localhost:8000/view/{{ name }}">COPY LINK</button>
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script>
+<script>new ClipboardJS('.copy');</script>
+{%  endblock %}
